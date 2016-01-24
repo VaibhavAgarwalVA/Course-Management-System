@@ -184,7 +184,8 @@ public class Course
 								course_fac[i].create_faculty();
 							}
 							
-							
+							System.out.println("\n\nCourse created. Saving and returning...\n");
+							for(int i=0; i < 100000000; i++) ;
 	}
 	
 	void register_part(int i)throws IOException{
