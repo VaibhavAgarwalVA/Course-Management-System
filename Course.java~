@@ -8,14 +8,12 @@ public class Course
 	
 	// data-members 
 	
-	String course_name;
-	double fees;
-	Integer date;
-	Integer month;
-	Integer year;
-	Integer duration_days;
-	Integer num_of_fac;
-	Integer num_of_part;
+	private String course_name;
+	private double fees;
+	private String start;
+	private Integer duration_days;
+	private Integer num_of_fac;
+	private Integer num_of_part;
 	
 	Faculty course_coord;
 	Faculty course_fac[] = new Faculty[5];
@@ -29,9 +27,7 @@ public class Course
 	Course () {
 		course_name = " ";
 		fees = 0.0;
-		date = 0;
-		month = 0;
-		year = 0;
+		start = " ";
 		duration_days = 0;
 		num_of_fac= 0;
 		num_of_part= 0;
@@ -54,10 +50,8 @@ public class Course
 		fees = f;
 	} 
 	
-	void set_course_date ( int d, int m, int y ) {
-		date = d;
-		month = m;
-		year = y;
+	void set_start_date ( String s ) {
+		start = s;
 	} 
 	
 	void set_course_duration ( int dd ) {
@@ -81,16 +75,8 @@ public class Course
 		return fees;
 	}  
 	
-	int get_course_date () {
-		return date;
-	}  
-	
-	int get_course_month () {
-		return month;
-	}
-	
-	int get_course_year () {
-		return year;
+	String get_start_date(){
+		return start;
 	}  
 	
 	int get_course_duration () {
@@ -111,7 +97,7 @@ public class Course
 	
 	boolean valid_course () {
 		if( duration_days > 14 ) {
-			System.out.println("Invalid course duration \n");
+			System.out.println("Invalid course duration. Maximum 14 days allowed. \n");
 			return false;
 		}
 		return true;
@@ -120,7 +106,7 @@ public class Course
 	void display_course() {
 		System.out.println("-- Course Details --");
 		System.out.println("Course Name: "+ course_name);
-		System.out.println("Course Start Date: "+ date + "/" + month + "/" + year);
+		System.out.println("Course Start Date: "+ start);
 		System.out.println("Course Fees: INR "+ fees);
 		System.out.println("Course Duration: "+ duration_days + " days");
 		System.out.println("Course Coordinator: "+ course_coord.get_fac_name() );
@@ -154,17 +140,27 @@ public class Course
 							course_name= cn;
 							
 							System.out.print("\n-- ii. Course fee (in INR) : ");
-							double fe = Double.parseDouble(br.readLine());
+							double fe = 0;
+							try{
+								fe= Double.parseDouble(br.readLine());
+							}
+							catch(Exception e){
+								System.out.println("Please enter valid integer");
+							}
 							fees= fe;
 														
-							System.out.print("\n-- iii. Course start-date (as- 'dd' then 'mm' then 'yyyy' ) : ");
-							int d = Integer.parseInt(br.readLine());
-							int m = Integer.parseInt(br.readLine());
-							int y = Integer.parseInt(br.readLine());
-							set_course_date(d,m,y);
+							System.out.print("\n-- iii. Course start-date (dd/mm/yyyy in a single string) : ");
+							String st = br.readLine();
+							start = st;
 							
 							System.out.print("\n-- iv. Course duration (in days): ");
-							int du = Integer.parseInt(br.readLine());
+							int du = 0;
+							try{
+							du= Integer.parseInt(br.readLine());
+							}
+							catch(Exception e){
+								System.out.println("Please enter valid integer");
+							}
 							duration_days= du;
 							
 							System.out.println("------------------------------------------------");
@@ -174,8 +170,13 @@ public class Course
 							course_coord.create_faculty();
 							
 							System.out.println("\nDetails Noted. Enter the number of faculty associated with the course.");
-							int n;
+							int n = 0;
+							try{
 							n= Integer.parseInt(br.readLine());
+							}
+							catch(Exception e){
+								System.out.println("Please enter valid integer");
+							}
 							num_of_fac= n;
 							
 							for(int i=0; i<num_of_fac; i++){
@@ -184,8 +185,7 @@ public class Course
 								course_fac[i].create_faculty();
 							}
 							
-							System.out.println("\n\nCourse created. Saving and returning...\n");
-							for(int i=0; i < 100000000; i++) ;
+							
 	}
 	
 	void register_part(int i)throws IOException{
@@ -197,6 +197,96 @@ public class Course
 		for(int i=0;i<num_of_part;i++)
 			System.out.println("Participant #"+(i+1)+" is : "+ 	reg_part[i].get_part_name());
 	}
+	
+	//search for faculty
+	boolean search_fac_by_name (String n) {
+		boolean vv = false;
+		if((course_coord.get_fac_name()).equals(n) == true)
+			vv = true;
+		else{
+			for(int i=0; i< num_of_fac; i++){
+				if((course_fac[i].get_fac_name()).equals(n) == true)
+					vv = true;
+			}
+		}
+		return vv;	
+	}
+	
+	//search for participant
+	boolean search_part_by_name (String n) {
+		boolean vv = false;
+		for(int i=0; i< num_of_part; i++){
+			if((reg_part[i].get_part_name()).equals(n) == true)
+				vv = true;
+		}
+		return vv;	
+	}
+	
+	void edit_course()throws IOException{
+		System.out.println("Which field do you want to edit");
+		System.out.println("1 - Course Name");
+		System.out.println("2 - Start- date");
+		System.out.println("3 - Fees");
+		System.out.println("4 - Duration of course");
+		System.out.println("5 - Course Coordinator");
+		System.out.println("6 - Faculty");
+		int cco = 0;
+		String stt;
+		int stri;
+		try{
+			cco = Integer.parseInt(br.readLine());
+		}
+		catch(Exception e){
+			System.out.println("Enter valid credentials");
+		}
+		switch(cco)
+		{
+				case 1: System.out.println("Enter the changed course name");
+						stt= br.readLine();
+						set_course_name(stt);
+						System.out.println("Course Name changed to : "+ get_course_name());
+													break;
+													
+				case 2: System.out.println("Enter the changed start date");
+						stt= br.readLine();
+						set_start_date(stt);
+						System.out.println("Course Start Date changed to : "+ get_start_date());
+													break;
+													
+				case 3: System.out.println("Enter the changed course fee");
+						double fees_c = 0.0;
+						try{
+							fees_c = Double.parseDouble(br.readLine());
+						}
+						catch(Exception e){
+							System.out.println("Enter a valid floating type value");
+						}
+						set_course_fee(fees_c);
+						System.out.println("Course Fees changed to : "+ get_course_fee());
+													break;
+													
+				case 4: System.out.println("Enter the changed course duration");
+						stri = 0;
+						try{
+							stri = Integer.parseInt(br.readLine());
+						}
+						catch(Exception e){
+							System.out.println("Enter a valid course duration in days (<14 days)"); 
+						}
+						set_course_duration(stri);
+						System.out.println("Course Fees changed to : "+ get_course_duration());
+													break;
+	
+				case 5: System.out.println("Enter the details of the changed course coordinator");
+						course_coord.create_faculty();
+						System.out.println("Course Coordinator changed to " + course_coord.get_fac_name());
+													break;
+													
+				case 6: 
+													break;						
+			}
+	}
+	
 	 
 }
 

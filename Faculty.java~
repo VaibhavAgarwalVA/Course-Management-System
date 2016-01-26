@@ -7,11 +7,11 @@ public class Faculty
 
 	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));	
 	
-	String fac_department;
-	String fac_name;
-	String fac_address;
-	long fac_mobile_no;
-	String fac_email_id;
+	private String fac_department;
+	private String fac_name;
+	private String fac_address;
+	private long fac_mobile_no;
+	private String fac_email_id;
 	
 	
 	
@@ -67,8 +67,10 @@ public class Faculty
 	}
 	
 	//functions
-	void create_faculty()throws IOException{
-		System.out.println("\n-- Faculty Creation Routine-- ");
+	void create_faculty(){
+						
+					try{		
+							System.out.println("\n-- Faculty Creation Routine-- ");
 							System.out.println("Enter the details as mentioned.");
 							
 							System.out.print("\n-- i. Faculty-name : ");
@@ -90,7 +92,10 @@ public class Faculty
 							System.out.print("\n-- v. Faculty's Contact Number: ");
 							long num = Long.parseLong(br.readLine());
 							fac_mobile_no= num;
-							
+					}
+					catch(Exception e){
+						System.out.println("Enter the details in a valid format");
+					}	
 	}
 }
 

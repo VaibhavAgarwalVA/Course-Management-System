@@ -1,15 +1,17 @@
 import java.io.*;
+import java.util.*;
+
 
 public class Participant 
 {
 	
 	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 	
-	String part_name;
-	String part_address;
-	long part_mobile_no;
-	String part_org;
-	String part_email_id;
+	private String part_name;
+	private String part_address;
+	private long part_mobile_no;
+	private String part_org;
+	private String part_email_id;
 	
 	/**********************************/
 	
