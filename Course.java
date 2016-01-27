@@ -103,6 +103,14 @@ public class Course
 		return true;
 	} 
 	
+	void delete_part(int i){
+		;
+	}
+	
+	void delete_fac(int i){
+		;
+	}
+	
 	void display_course() {
 		System.out.println("-- Course Details --");
 		System.out.println("Course Name: "+ course_name);
@@ -131,8 +139,9 @@ public class Course
 		System.out.println("Course Name: "+ course_name);
 	}
 	
-	void create_course()throws IOException {
+	void create_course() throws IOException{
 		System.out.println("\n-- Course Creation Portal-- ");
+					//try{	
 							System.out.println("Enter the details as mentioned.");
 							
 							System.out.print("\n-- i. Course-name : ");
@@ -172,7 +181,12 @@ public class Course
 							System.out.println("\nDetails Noted. Enter the number of faculty associated with the course.");
 							int n = 0;
 							try{
-							n= Integer.parseInt(br.readLine());
+								n= Integer.parseInt(br.readLine());
+								while(n < 0 || n > 5){
+									System.out.println("Enter a non-negative value less than 5. ");
+									n= Integer.parseInt(br.readLine());
+								}
+								
 							}
 							catch(Exception e){
 								System.out.println("Please enter valid integer");
@@ -184,7 +198,10 @@ public class Course
 								System.out.println("\n\nFaculty Number : "+(i+1));
 								course_fac[i].create_faculty();
 							}
-							
+						//}
+						//catch(Exception et){
+							//System.out.println("Invalid input");
+						//}	
 							
 	}
 	
@@ -229,7 +246,6 @@ public class Course
 		System.out.println("3 - Fees");
 		System.out.println("4 - Duration of course");
 		System.out.println("5 - Course Coordinator");
-		System.out.println("6 - Faculty");
 		int cco = 0;
 		String stt;
 		int stri;
@@ -241,6 +257,7 @@ public class Course
 		}
 		switch(cco)
 		{
+			//try{		
 				case 1: System.out.println("Enter the changed course name");
 						stt= br.readLine();
 						set_course_name(stt);
@@ -269,9 +286,14 @@ public class Course
 						stri = 0;
 						try{
 							stri = Integer.parseInt(br.readLine());
+							while(stri < 0){
+								System.out.println("Duration can't be negative. Try again.");
+								stri = Integer.parseInt(br.readLine()); 
+							}
+								
 						}
 						catch(Exception e){
-							System.out.println("Enter a valid course duration in days (<14 days)"); 
+							System.out.println("Enter a valid integer as course duration in days."); 
 						}
 						set_course_duration(stri);
 						System.out.println("Course Fees changed to : "+ get_course_duration());
@@ -280,10 +302,14 @@ public class Course
 				case 5: System.out.println("Enter the details of the changed course coordinator");
 						course_coord.create_faculty();
 						System.out.println("Course Coordinator changed to " + course_coord.get_fac_name());
-													break;
+									break;
+			//	}
+				
+		//		catch(Exception e){
+	//				System.out.println("Enter the details in valid format");
+//				}									
 													
-				case 6: 
-													break;						
+				default : System.out.println("Invalid entry");		
 			}
 	}
 	

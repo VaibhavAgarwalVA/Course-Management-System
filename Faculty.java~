@@ -67,9 +67,13 @@ public class Faculty
 	}
 	
 	//functions
-	void create_faculty(){
+	void display_fac_name(){
+		System.out.println("Name : " + fac_name);
+	}
+	
+	void create_faculty()throws IOException{
 						
-					try{		
+					//try{		
 							System.out.println("\n-- Faculty Creation Routine-- ");
 							System.out.println("Enter the details as mentioned.");
 							
@@ -90,13 +94,81 @@ public class Faculty
 							fac_email_id= id;
 							
 							System.out.print("\n-- v. Faculty's Contact Number: ");
-							long num = Long.parseLong(br.readLine());
+							long num=0;
+							try{
+								num = Long.parseLong(br.readLine());
+							}
+							catch(Exception e){
+								System.out.println("Incorrect format");
+							}	 
 							fac_mobile_no= num;
-					}
-					catch(Exception e){
-						System.out.println("Enter the details in a valid format");
-					}	
+					//}
+				//	catch(Exception et){
+						//System.out.println("Enter the details in a valid format");
+					//}	
 	}
+	
+	void edit_faculty()throws IOException{
+		System.out.println("Which field do you want to edit");
+		System.out.println("1 - Name");
+		System.out.println("2 - Address");
+		System.out.println("3 - Mobile Number");
+		System.out.println("4 - E-mail ID");
+		System.out.println("5 - Department");
+		int cco = 0;
+		String stt;
+		try{
+			cco = Integer.parseInt(br.readLine());
+		}
+		catch(Exception e){
+			System.out.println("Enter valid credentials");
+		}
+		switch(cco)
+		{
+			//try{
+				case 1: System.out.println("Enter the changed faculty name");
+						stt= br.readLine();
+						set_fac_name(stt);
+						System.out.println("Name changed to : "+ get_fac_name());
+													break;
+													
+				case 2: System.out.println("Enter the changed address");
+						stt= br.readLine();
+						fac_address = stt;
+						System.out.println("Address changed to : "+ fac_address);
+													break;
+													
+				case 3: System.out.println("Enter the changed mobile number");
+						long numberm = 0;
+						try{
+							numberm = Long.parseLong(br.readLine());
+						}
+						catch(Exception e){
+							System.out.println("Enter a valid integer type value");
+						}
+						fac_mobile_no = numberm;
+						System.out.println("Mobile Number changed to : "+ fac_mobile_no);
+													break;
+													
+				case 4: System.out.println("Enter the changed email id.");
+						stt = "random@gmail.com";
+						stt = br.readLine();
+						fac_email_id = stt;
+						System.out.println("Email ID changed to : "+ fac_email_id);
+													break;
+	
+				case 5: System.out.println("Enter the changed department name.");
+						stt = br.readLine();
+						fac_department = stt;
+						System.out.println("Department changed to : "+ fac_department);
+													break;
+													
+				default : System.out.println("Invalid entry");	
+				//catch(Exception et){
+					//System.out.println("Input format error");
+				//}										
+			//}
+	}	
 }
-
+}
 

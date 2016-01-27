@@ -68,8 +68,13 @@ public class Participant
 	}
 	
 	//functions
+	void display_part_name(){
+		System.out.println("Name : " + part_name);
+	}
+	
 	void create_participant()throws IOException{
 		System.out.println("\n\n-- Participant Creation Routine-- ");
+			//try{
 							System.out.println("\nEnter the details as mentioned.");
 							
 							System.out.print("\n-- i. Participant-name : ");
@@ -89,7 +94,83 @@ public class Participant
 							part_email_id= id;
 							
 							System.out.print("\n-- v. Participant's Contact Number: ");
-							long num = Long.parseLong(br.readLine());
+							long num = 00;
+							try{
+								num = Long.parseLong(br.readLine());
+							}
+							catch(Exception e){
+								System.out.println("Enter a valid integer");	
+							} 
 							part_mobile_no= num;
+				//}
+			//	catch(Exception et){
+					//System.out.println("Invalid input format");
+				//}	
+	}
+	
+	
+	
+	void edit_participant()throws IOException{
+		System.out.println("Which field do you want to edit");
+		System.out.println("1 - Name");
+		System.out.println("2 - Address");
+		System.out.println("3 - Mobile Number");
+		System.out.println("4 - E-mail ID");
+		System.out.println("5 - Organisation");
+		int cco = 0;
+		String stt;
+		try{
+			cco = Integer.parseInt(br.readLine());
+		}
+		catch(Exception e){
+			System.out.println("Enter valid credentials");
+		}
+		switch(cco)
+		{
+			//try{
+				case 1: System.out.println("Enter the changed participant name");
+						stt= br.readLine();
+						set_part_name(stt);
+						System.out.println("Name changed to : "+ get_part_name());
+													break;
+													
+				case 2: System.out.println("Enter the changed address");
+						stt= br.readLine();
+						part_address = stt;
+						System.out.println("Address changed to : "+ part_address);
+													break;
+													
+				case 3: System.out.println("Enter the changed mobile number");
+						long numberm = 0;
+						try{
+							numberm = Long.parseLong(br.readLine());
+						}
+						catch(Exception e){
+							System.out.println("Enter a valid integer type value");
+						}
+						part_mobile_no = numberm;
+						System.out.println("Mobile Number changed to : "+ part_mobile_no);
+													break;
+													
+				case 4: System.out.println("Enter the changed email id.");
+						stt = "random@gmail.com";
+						stt = br.readLine();
+						part_email_id = stt;
+						System.out.println("Email ID changed to : "+ part_email_id);
+													break;
+	
+				case 5: System.out.println("Enter the changed organisation name.");
+						stt = br.readLine();
+						part_org = stt;
+						System.out.println("Organisation name changed to : "+ part_org);
+													break;
+				default : System.out.println("Invalid entry");	
+			//}
+			//catch(Exception et){
+				//System.out.println("Invalid format");
+			//}
+																	
+					
+		}
 	}	
 }
