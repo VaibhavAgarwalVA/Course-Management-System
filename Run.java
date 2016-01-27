@@ -21,6 +21,8 @@ public class Run
 			System.out.println("-- Enter 2. 'Participants' registration portal --");
 			System.out.println("-- Enter 3. Editing details of courses, participants and faculty --");
 			System.out.println("-- Enter 4. Deleting something --");
+			System.out.println("-- Enter 5. EXIT --");
+			
 			System.out.println("------------------------------------");
 			choice = 0;
 			try {
@@ -54,6 +56,21 @@ public class Run
 								
 								vec.addElement(c);
 								//push the object into the file
+								
+								
+								System.out.println("\nHow about entering participants now ?? \nEnter 1 to register participants.");
+								int ni;
+								ni= 0;
+								try{
+									ni= Integer.parseInt(br.readLine());
+								}
+								catch(Exception e){
+									System.out.println("Incorrect format");
+								}
+								
+								if(ni != 1){
+									break;
+								}
 							}
 							else
 								System.out.println("\nThere seems to be some problem. Please try again !");
@@ -65,12 +82,15 @@ public class Run
 							}
 							for(int i = 0; i<vec.size(); i++)
 								vec.elementAt(i).display_course();
+							
+							break;	
 						}
 						
-						else
+						else {
 							System.out.println("WARNING ! Incorrect choice. Returning...\n"); 
+							break;
+						}
 						
-						break;
 				
 				
 				
@@ -85,6 +105,10 @@ public class Run
 							System.out.println("Error. Enter a valid integer.");
 						}
 						if(ch == 1){
+							if(vec.size() == 0){
+								System.out.println("NO courses to show. Create some course first.");
+								break;
+							}
 							for(int i = 0; i< vec.size(); i++){
 									System.out.println("Course Number # " + (i+1) + " is : " + vec.elementAt(i).get_course_name() );
 							}
@@ -100,6 +124,7 @@ public class Run
 							}
 							catch(Exception e){
 								System.out.println("Incorrect format");
+								break;
 							}
 							
 							Course c= vec.elementAt(nnum-1);  
@@ -115,6 +140,7 @@ public class Run
 							}
 							catch(Exception e){
 								System.out.println("Invalid input");
+								break;
 							}
 							c.set_num_of_part(nu);
 							for(int i=0;i<nu;i++)
@@ -146,9 +172,13 @@ public class Run
 							}
 							catch(Exception e){
 								System.out.println("Incorrect format");
+								break;
 							}
 							
 							Course c= vec.elementAt(nnum-1);  
+							if(c.get_num_of_part() == 0){
+								System.out.println("No registered participant yet");
+							}	
 							for(int i=0; i<c.get_num_of_part(); ++i)
 								c.display_participants();
 						}
@@ -205,6 +235,7 @@ public class Run
 										}
 										catch(Exception e){
 											System.out.println("Incorrect value format");
+											break;
 										}
 										
 										vec.elementAt(num-1).edit_course();
@@ -218,33 +249,34 @@ public class Run
 									boo = false;
 									for(int i = 0; i< vec.size(); i++){
 										for(int j = 0; j< vec.elementAt(i).get_num_of_part(); j++){
-											if(vec.elementAt(i).reg_part[j].get_part_name().equals(srch) == true){
+											if(vec.elementAt(i).reg_part.elementAt(j).get_part_name().equals(srch) == true){
 												System.out.println("Participant Number : " + (i)+(j) );
 												vec.elementAt(i).display_course_name();
-												vec.elementAt(i).reg_part[j].display_part_name();
+												vec.elementAt(i).reg_part.elementAt(j).display_part_name();
 												boo = true;
 											}
 										}
 									}
 									
 									if(boo == false){
-										System.out.println("No such course found. Please check.");
+										System.out.println("No such participant found. Please check.");
 									}
 									else{
 										System.out.println("Enter the participant number of the participant you want to edit");
-										int num=0;
+										int num=-1;
 										try{
 											num = Integer.parseInt(br.readLine());
-											while(num <= 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_part() ){
+											while(num < 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_part() ){
 												System.out.println("Invalid participant number. Try again.");
 												num = Integer.parseInt(br.readLine());	
 											}
 										}
 										catch(Exception e){
 											System.out.println("Incorrect value format");
+											break;
 										}
 										
-										vec.elementAt(num/10).reg_part[num%10].edit_participant();
+										vec.elementAt(num/10).reg_part.elementAt(num%10).edit_participant();
 									}
 									
 									break;
@@ -254,33 +286,34 @@ public class Run
 									boo = false;
 									for(int i = 0; i< vec.size(); i++){
 										for(int j = 0; j< vec.elementAt(i).get_num_of_fac(); j++){
-											if(vec.elementAt(i).course_fac[j].get_fac_name().equals(srch) == true){
+											if(vec.elementAt(i).course_fac.elementAt(j).get_fac_name().equals(srch) == true){
 												System.out.println("Faculty Number : " + (i)+(j) );
 												vec.elementAt(i).display_course_name();
-												vec.elementAt(i).course_fac[j].display_fac_name();
+												vec.elementAt(i).course_fac.elementAt(j).display_fac_name();
 												boo = true;
 											}
 										}
 									}
 									
 									if(boo == false){
-										System.out.println("No such course found. Please check.");
+										System.out.println("No such faculty found. Please check.");
 									}
 									else{
 										System.out.println("Enter the faculty code of the faculty you want to edit");
 										int num=0;
 										try{
 											num = Integer.parseInt(br.readLine());
-											while(num <= 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_fac() ){
+											while(num < 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_fac() ){
 												System.out.println("Invalid faculty number. Try again.");
 												num = Integer.parseInt(br.readLine());	
 											}
 										}
 										catch(Exception e){
 											System.out.println("Incorrect value format");
+											break;
 										}
 										
-										vec.elementAt(num/10).course_fac[num%10].edit_faculty();
+										vec.elementAt(num/10).course_fac.elementAt(num%10).edit_faculty();
 									}
 									break;
 									
@@ -333,6 +366,7 @@ public class Run
 										}
 										catch(Exception e){
 											System.out.println("Incorrect value format");
+											break;
 										}
 										
 										vec.remove(num-1);
@@ -347,10 +381,10 @@ public class Run
 									booh = false;
 									for(int i = 0; i< vec.size(); i++){
 										for(int j = 0; j< vec.elementAt(i).get_num_of_part(); j++){
-											if(vec.elementAt(i).reg_part[j].get_part_name().equals(srchh) == true){
+											if(vec.elementAt(i).reg_part.elementAt(j).get_part_name().equals(srchh) == true){
 												System.out.println("Participant Number : " + (i)+(j) );
 												vec.elementAt(i).display_course_name();
-												vec.elementAt(i).reg_part[j].display_part_name();
+												vec.elementAt(i).reg_part.elementAt(j).display_part_name();
 												booh = true;
 											}
 										}
@@ -371,6 +405,7 @@ public class Run
 										}
 										catch(Exception e){
 											System.out.println("Incorrect value format");
+											break;
 										}
 										
 										vec.elementAt(num/10).delete_part(num%10);
@@ -383,10 +418,10 @@ public class Run
 									booh = false;
 									for(int i = 0; i< vec.size(); i++){
 										for(int j = 0; j< vec.elementAt(i).get_num_of_fac(); j++){
-											if(vec.elementAt(i).course_fac[j].get_fac_name().equals(srchh) == true){
+											if(vec.elementAt(i).course_fac.elementAt(j).get_fac_name().equals(srchh) == true){
 												System.out.println("Faculty Number : " + (i)+(j) );
 												vec.elementAt(i).display_course_name();
-												vec.elementAt(i).course_fac[j].display_fac_name();
+												vec.elementAt(i).course_fac.elementAt(j).display_fac_name();
 												booh = true;
 											}
 										}
@@ -407,6 +442,7 @@ public class Run
 										}
 										catch(Exception e){
 											System.out.println("Incorrect value format");
+											break;
 										}
 										
 										vec.elementAt(num/10).delete_fac(num%10);
@@ -418,7 +454,10 @@ public class Run
 						}
 						break;
 				
-				default:
+				case 5: 
+						break;
+				
+				default: System.out.println("Enter a valid choice option");
 			}
 			
 			/*********************************************/

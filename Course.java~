@@ -16,8 +16,8 @@ public class Course
 	private Integer num_of_part;
 	
 	Faculty course_coord;
-	Faculty course_fac[] = new Faculty[5];
-	Participant reg_part[] = new Participant[5];
+	Vector <Faculty> course_fac = new Vector <Faculty> ();
+	Vector <Participant> reg_part = new Vector <Participant> ();
 	
 	/**********************************/
 	
@@ -33,10 +33,6 @@ public class Course
 		num_of_part= 0;
 		
 		course_coord= new Faculty();
-		for(int i=0; i<5; i++){
-			course_fac[i]= new Faculty();
-			reg_part[i]= new Participant();
-		}
 	}
 	
 	
@@ -104,11 +100,11 @@ public class Course
 	} 
 	
 	void delete_part(int i){
-		;
+		reg_part.remove(i);
 	}
 	
 	void delete_fac(int i){
-		;
+		course_fac.remove(i);
 	}
 	
 	void display_course() {
@@ -121,7 +117,7 @@ public class Course
 		if(num_of_fac > 0){
 			System.out.println("Associsted Faculty List:");
 			for(int i=0;i<num_of_fac;i++)
-				System.out.println("Faculty #"+(i+1)+" : "+course_fac[i].get_fac_name() );
+				System.out.println("Faculty #"+(i+1)+" : "+course_fac.elementAt(i).get_fac_name() );
 		}
 		else
 			System.out.println("No associated faculty.");
@@ -129,7 +125,7 @@ public class Course
 		if(num_of_part > 0){
 			System.out.println("Registered Participant List:");
 			for(int i=0;i<num_of_part;i++)
-				System.out.println("Participant #"+(i+1)+" : "+reg_part[i].get_part_name() );
+				System.out.println("Participant #"+(i+1)+" : "+reg_part.elementAt(i).get_part_name() );
 		}
 		else
 			System.out.println("No registered participant yet.");	
@@ -196,7 +192,10 @@ public class Course
 							for(int i=0; i<num_of_fac; i++){
 								System.out.println("\n------------------------------");
 								System.out.println("\n\nFaculty Number : "+(i+1));
-								course_fac[i].create_faculty();
+								Faculty c = new Faculty();
+								course_fac.addElement(c);
+								num_of_fac = course_fac.size();
+								course_fac.elementAt(i).create_faculty();
 							}
 						//}
 						//catch(Exception et){
@@ -206,13 +205,16 @@ public class Course
 	}
 	
 	void register_part(int i)throws IOException{
-		reg_part[i].create_participant();
+		Participant c = new Participant();
+		reg_part.addElement(c);
+		num_of_part = reg_part.size();
+		reg_part.elementAt(i).create_participant();
 		System.out.println("\n-- Participant details noted successfully --\n");
 	}
 	
 	void display_participants(){
 		for(int i=0;i<num_of_part;i++)
-			System.out.println("Participant #"+(i+1)+" is : "+ 	reg_part[i].get_part_name());
+			System.out.println("Participant #"+(i+1)+" is : "+ 	reg_part.elementAt(i).get_part_name());
 	}
 	
 	//search for faculty
@@ -222,7 +224,7 @@ public class Course
 			vv = true;
 		else{
 			for(int i=0; i< num_of_fac; i++){
-				if((course_fac[i].get_fac_name()).equals(n) == true)
+				if((course_fac.elementAt(i).get_fac_name()).equals(n) == true)
 					vv = true;
 			}
 		}
@@ -233,7 +235,7 @@ public class Course
 	boolean search_part_by_name (String n) {
 		boolean vv = false;
 		for(int i=0; i< num_of_part; i++){
-			if((reg_part[i].get_part_name()).equals(n) == true)
+			if((reg_part.elementAt(i).get_part_name()).equals(n) == true)
 				vv = true;
 		}
 		return vv;	
