@@ -1,10 +1,8 @@
 import java.io.*;
 import java.util.*;
 
-public class Course 
+public class Course implements java.io.Serializable
 {
-	
-	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 	
 	// data-members 
 	
@@ -108,6 +106,7 @@ public class Course
 	}
 	
 	void display_course() {
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("-- Course Details --");
 		System.out.println("Course Name: "+ course_name);
 		System.out.println("Course Start Date: "+ start);
@@ -122,13 +121,16 @@ public class Course
 		else
 			System.out.println("No associated faculty.");
 		
+		num_of_part = reg_part.size();
 		if(num_of_part > 0){
-			System.out.println("Registered Participant List:");
+			System.out.println("Registered Participant List: ");
 			for(int i=0;i<num_of_part;i++)
 				System.out.println("Participant #"+(i+1)+" : "+reg_part.elementAt(i).get_part_name() );
 		}
 		else
-			System.out.println("No registered participant yet.");	
+			System.out.println("No registered participant yet.");
+			
+		System.out.println("\n--------****---------\n");		
 	}
 	
 	void display_course_name() {
@@ -136,6 +138,8 @@ public class Course
 	}
 	
 	void create_course() throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		
 		System.out.println("\n-- Course Creation Portal-- ");
 					//try{	
 							System.out.println("Enter the details as mentioned.");
@@ -194,9 +198,12 @@ public class Course
 								System.out.println("\n\nFaculty Number : "+(i+1));
 								Faculty c = new Faculty();
 								course_fac.addElement(c);
-								num_of_fac = course_fac.size();
 								course_fac.elementAt(i).create_faculty();
 							}
+							num_of_fac = course_fac.size();
+							
+							num_of_part = reg_part.size();
+							
 						//}
 						//catch(Exception et){
 							//System.out.println("Invalid input");
@@ -205,6 +212,12 @@ public class Course
 	}
 	
 	void register_part(int i)throws IOException{
+		num_of_part = reg_part.size();
+		if(num_of_part == 5){
+			System.out.println("There can be a maximum of 5 participants");
+			return;
+		}
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		Participant c = new Participant();
 		reg_part.addElement(c);
 		num_of_part = reg_part.size();
@@ -213,6 +226,7 @@ public class Course
 	}
 	
 	void display_participants(){
+		num_of_part = reg_part.size();
 		for(int i=0;i<num_of_part;i++)
 			System.out.println("Participant #"+(i+1)+" is : "+ 	reg_part.elementAt(i).get_part_name());
 	}
@@ -242,6 +256,7 @@ public class Course
 	}
 	
 	void edit_course()throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Which field do you want to edit");
 		System.out.println("1 - Course Name");
 		System.out.println("2 - Start- date");

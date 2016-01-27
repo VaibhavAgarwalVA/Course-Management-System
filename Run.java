@@ -1,21 +1,42 @@
 import java.io.*;
 import java.util.*;
 
-public class Run
-{
+public class Run implements java.io.Serializable
+{	
 	
-	public static Vector<Course> vec= new Vector<Course>();	
+	public static Vector<Course> vec= new Vector<Course>();
 	
 	public static void main(String args[])throws Exception {
 	
 		int choice;
+		
+		//ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			
 		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+		
 		System.out.println("-- Welcome to Short Term Course Management Portal --");
 		System.out.println("**************************************************** \n");
 		System.out.println("This portal will guide you to perform various tasks related to courses, participants and faculty associated.");
 		
-		do{
+		do{	
+		
+			FileInputStream fileIn = new FileInputStream("data.ser");
+     	  	ObjectInputStream in = null; 
+     	  	
+     	  	 
+  			File file = new File("data.ser");
+  			boolean isEmpty = file.length()<10;
+    	   	if(!isEmpty){
+    	  		in = new ObjectInputStream(new BufferedInputStream(fileIn));
+    	   		vec = (Vector<Course>) in.readObject();
+    	   	}
+    	   
+			if(in!=null){
+				in.close();
+			}
+			fileIn.close();
+			
+			
 			System.out.println("-- PORTAL DETAILS --");
 			System.out.println("-- Enter 1. 'Course' creation wizard OR 'Course' display segment --");
 			System.out.println("-- Enter 2. 'Participants' registration portal --");
@@ -34,6 +55,7 @@ public class Run
 			
 			switch(choice) 
 			{
+			
 				case 1: System.out.println("-- Enter 1. Creating a new course --");
 						System.out.println("-- Enter 2. Display particular course details --");
 						int cc = 0;
@@ -55,8 +77,18 @@ public class Run
 								System.out.println("\n Details entered successfully !");
 								
 								vec.addElement(c);
-								//push the object into the file
 								
+								//write to file
+								try{	
+									FileOutputStream fileOut = new FileOutputStream("data.ser");
+									ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(fileOut));
+									out.writeObject(vec);
+									out.close();
+									fileOut.close();
+								}
+								catch(Exception e){
+									e.printStackTrace();
+								}	
 								
 								System.out.println("\nHow about entering participants now ?? \nEnter 1 to register participants.");
 								int ni;
@@ -127,7 +159,7 @@ public class Run
 								break;
 							}
 							
-							Course c= vec.elementAt(nnum-1);  
+							//Course c= vec.elementAt(nnum-1);  
 							
 							System.out.println("Enter how many participants do you want to register.");
 							int nu = 0;
@@ -142,13 +174,34 @@ public class Run
 								System.out.println("Invalid input");
 								break;
 							}
-							c.set_num_of_part(nu);
-							for(int i=0;i<nu;i++)
-								c.register_part(i);
+							
+							if(vec.elementAt(nnum-1).get_num_of_part() == 5){
+								System.out.println("Cannot enter more participants");
+								break;
+							}
+							
+							if(nu + vec.elementAt(nnum-1).get_num_of_part() > 5 ){
+								nu= 5 - vec.elementAt(nnum-1).get_num_of_part();
+							}
+							
+							int lli = vec.elementAt(nnum-1).get_num_of_part() ;
+							for(int i=0; i<nu;i++){
+								vec.elementAt(nnum -1).register_part(lli + i);
+							}
 							
 							System.out.println("\n Details entered successfully !");
-							//push object to file
 							
+							//push object to file
+							try {
+								FileOutputStream fileOut = new FileOutputStream("data.ser");
+								ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(fileOut));
+								out.writeObject(vec);
+								out.close();
+								fileOut.close();
+							}
+							catch(Exception e){
+								e.printStackTrace();
+							}
 						}
 						
 						else if(ch == 2){
@@ -179,8 +232,9 @@ public class Run
 							if(c.get_num_of_part() == 0){
 								System.out.println("No registered participant yet");
 							}	
-							for(int i=0; i<c.get_num_of_part(); ++i)
-								c.display_participants();
+							
+							
+							c.display_participants();
 						}
 						
 						else
@@ -263,12 +317,12 @@ public class Run
 									}
 									else{
 										System.out.println("Enter the participant number of the participant you want to edit");
-										int num=-1;
+										String num= " ";
 										try{
-											num = Integer.parseInt(br.readLine());
-											while(num < 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_part() ){
+											num = br.readLine();
+											while(num.charAt(0)-'0' >= vec.size() || num.charAt(1)-'0' >= vec.elementAt(num.charAt(0)-'0').get_num_of_part() ){
 												System.out.println("Invalid participant number. Try again.");
-												num = Integer.parseInt(br.readLine());	
+												num = br.readLine();	
 											}
 										}
 										catch(Exception e){
@@ -276,7 +330,7 @@ public class Run
 											break;
 										}
 										
-										vec.elementAt(num/10).reg_part.elementAt(num%10).edit_participant();
+										vec.elementAt(num.charAt(0)-'0').reg_part.elementAt(num.charAt(1)-'0').edit_participant();
 									}
 									
 									break;
@@ -300,12 +354,12 @@ public class Run
 									}
 									else{
 										System.out.println("Enter the faculty code of the faculty you want to edit");
-										int num=0;
+										String num= " ";
 										try{
-											num = Integer.parseInt(br.readLine());
-											while(num < 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_fac() ){
+											num = br.readLine();
+											while(num.charAt(0)-'0' >= vec.size() || num.charAt(1)-'0' >= vec.elementAt(num.charAt(0)-'0').get_num_of_fac() ){
 												System.out.println("Invalid faculty number. Try again.");
-												num = Integer.parseInt(br.readLine());	
+												num = br.readLine();	
 											}
 										}
 										catch(Exception e){
@@ -313,7 +367,7 @@ public class Run
 											break;
 										}
 										
-										vec.elementAt(num/10).course_fac.elementAt(num%10).edit_faculty();
+										vec.elementAt(num.charAt(0)-'0').course_fac.elementAt(num.charAt(1)-'0').edit_faculty();
 									}
 									break;
 									
@@ -356,10 +410,10 @@ public class Run
 									}
 									else{
 										System.out.println("Enter the course number of the course you want to edit");
-										int num=0;
+										int numi=0;
 										try{
-											num = Integer.parseInt(br.readLine());
-											if(num <= 0 || num > vec.size() ){
+											numi = Integer.parseInt(br.readLine());
+											if(numi <= 0 || numi > vec.size() ){
 												System.out.println("Invalid course number");
 												break;
 											}
@@ -369,7 +423,7 @@ public class Run
 											break;
 										}
 										
-										vec.remove(num-1);
+										vec.remove(numi-1);
 										System.out.println("Deleted");
 									}
 									
@@ -391,16 +445,16 @@ public class Run
 									}
 									
 									if(booh == false){
-										System.out.println("No such course found. Please check.");
+										System.out.println("No such participant found. Please check.");
 									}
 									else{
 										System.out.println("Enter the participant number of the participant you want to delete");
-										int num=0;
-										try{
-											num = Integer.parseInt(br.readLine());
-											while(num <= 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_part() ){
+										String num;
+										try{											
+											num = br.readLine();
+											while( num.charAt(0)-'0' >= vec.size() || num.charAt(1)-'0' >= vec.elementAt(num.charAt(0)-'0').get_num_of_part() ){
 												System.out.println("Invalid participant number. Try again.");
-												num = Integer.parseInt(br.readLine());	
+												num = br.readLine();	
 											}
 										}
 										catch(Exception e){
@@ -408,7 +462,7 @@ public class Run
 											break;
 										}
 										
-										vec.elementAt(num/10).delete_part(num%10);
+										vec.elementAt(num.charAt(0)-'0').delete_part(num.charAt(1)-'0');
 									}
 									
 									break;
@@ -428,16 +482,16 @@ public class Run
 									}
 									
 									if(booh == false){
-										System.out.println("No such course found. Please check.");
+										System.out.println("No such faculty found. Please check.");
 									}
 									else{
 										System.out.println("Enter the faculty code of the faculty you want to delete");
-										int num=0;
+										String num= " ";
 										try{
-											num = Integer.parseInt(br.readLine());
-											while(num <= 0 || num/10 >= vec.size() || num%10 >= vec.elementAt(num/10).get_num_of_fac() ){
+											num = br.readLine();
+											while(num.charAt(0)-'0' >= vec.size() || num.charAt(1)-'0' >= vec.elementAt(num.charAt(0)-'0').get_num_of_fac() ){
 												System.out.println("Invalid faculty number. Try again.");
-												num = Integer.parseInt(br.readLine());	
+												num = br.readLine();	
 											}
 										}
 										catch(Exception e){
@@ -445,7 +499,7 @@ public class Run
 											break;
 										}
 										
-										vec.elementAt(num/10).delete_fac(num%10);
+										vec.elementAt(num.charAt(0)-'0').delete_fac(num.charAt(1)-'0');
 									}
 									break;
 									
@@ -456,11 +510,25 @@ public class Run
 				
 				case 5: 
 						break;
+			
 				
 				default: System.out.println("Enter a valid choice option");
 			}
 			
+			
 			/*********************************************/
+			
+			try {
+				FileOutputStream fileOut = new FileOutputStream("data.ser");
+				ObjectOutputStream out = new ObjectOutputStream(new BufferedOutputStream(fileOut));
+				out.writeObject(vec);
+				out.close();
+				fileOut.close();
+			}
+			catch(Exception e){
+				e.printStackTrace();
+			}
+			
 			System.out.println("Do you want to continue (1/0). 0 to exit.");
 			choice = 0;
 			try{
@@ -473,6 +541,8 @@ public class Run
 				break;	 
 			/*********************************************/	
 		}while(true);
+		
+		
 		
 		System.out.println("\n\n-- Thanks a lot for visiting. Have a nice day ! --\n");
 	}

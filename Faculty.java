@@ -2,10 +2,8 @@ import java.io.*;
 import java.util.*;
 
 
-public class Faculty 
+public class Faculty implements java.io.Serializable
 {
-
-	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));	
 	
 	private String fac_department;
 	private String fac_name;
@@ -72,7 +70,7 @@ public class Faculty
 	}
 	
 	void create_faculty()throws IOException{
-						
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));				
 					//try{		
 							System.out.println("\n-- Faculty Creation Routine-- ");
 							System.out.println("Enter the details as mentioned.");
@@ -109,6 +107,7 @@ public class Faculty
 	}
 	
 	void edit_faculty()throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Which field do you want to edit");
 		System.out.println("1 - Name");
 		System.out.println("2 - Address");

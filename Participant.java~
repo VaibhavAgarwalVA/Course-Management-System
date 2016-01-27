@@ -2,10 +2,8 @@ import java.io.*;
 import java.util.*;
 
 
-public class Participant 
+public class Participant implements java.io.Serializable
 {
-	
-	BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 	
 	private String part_name;
 	private String part_address;
@@ -73,6 +71,7 @@ public class Participant
 	}
 	
 	void create_participant()throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("\n\n-- Participant Creation Routine-- ");
 			//try{
 							System.out.println("\nEnter the details as mentioned.");
@@ -111,6 +110,7 @@ public class Participant
 	
 	
 	void edit_participant()throws IOException{
+		BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
 		System.out.println("Which field do you want to edit");
 		System.out.println("1 - Name");
 		System.out.println("2 - Address");
